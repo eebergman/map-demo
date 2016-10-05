@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Map Sample</title>
+        <title>Airport Map</title>
+        <!-- Changed font on site -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -12,8 +13,7 @@
         <link href="Map.css" rel="stylesheet">
     </head>
     <body>
-        <h1>LLamasoft Map Exercise
-        </h1>
+        <h1>LLamasoft Map Exercise</h1>
         <div id="exercise-description">
             <div id="instruction-toggle"><span>Instructions</span> <span id="exercise-toggle">-</span></div>
             <div id="exercise-instructions">
@@ -59,13 +59,17 @@
                 <hr>
             </div>
         </div>
-        <div id="airport-data">
-            <div style="text-align: center;" id="airport-controls">
-                <p>Please choose your airport:</p>
-                <select id="airport-list">
-                </select>
+        <!-- Added menu div to create the airport menu -->
+
+        <div class="menu">
+            <div id="airport-data">
+                <div style="text-align: center;" id="airport-controls">
+                    <p>Please choose your airport:</p>
+                    <select id="airport-list">
+                    </select>
+                </div>
+                <p style="text-align: center;">Please click on the pin to learn more about the airport</p>
             </div>
-            <p style="text-align: center;">Please click on the pin to learn more about the airport</p>
         </div>
         <div id="airport-map">
         </div>

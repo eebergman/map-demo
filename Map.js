@@ -11,20 +11,17 @@ function initMap() {
         scrollwheel: true,
         zoom: 6
     });
-
-
-
 }
 
 $(function() {
 
     var MapFcns = {
-
         loadSiteList: function() {
             var airportList = $('#airport-list');
             airportList.html('');
             airportList.append('<option value=""></option>');
             for (var i in sites) {
+                // Changed dropdown to display "City: FullSiteName"
                 var newOption = $('<option value="' + sites[i].Code + '">' + sites[i].City + ": " + sites[i].FullSiteName + '</option>');
                 airportList.append(newOption);
             }
@@ -37,12 +34,8 @@ $(function() {
                 var currAirport = _.findWhere(sites, {
                     Code: airportCode
                 });
-                $('#setting-code').text(currAirport.Code);
-                $('#setting-city').text(currAirport.City);
-                $('#setting-name').text(currAirport.FullSiteName);
-                $('#setting-lat').text(currAirport.Latitude);
-                $('#setting-long').text(currAirport.Longitude);
 
+                //Variables send info from current airport to the infoWindow
                 $airCode = currAirport.Code;
                 $airCity = currAirport.City;
                 $airState = currAirport.State;
@@ -50,27 +43,29 @@ $(function() {
                 $airLat = currAirport.Latitude;
                 $airLong = currAirport.Longitude;
 
+                // Content String to send HTML to the infoWindow when user clicks on pin
                 var contentString = '<table>' +
-            '<tr>' +
-                '<th>Code</th>' +
-                '<th>City</th>' +
-                '<th>State</th>' +
-                '<th>Full Name</th>' +
-                '<th>Latitude</th>' +
-                '<th>Longitude</th>' +
-            '</tr>' +
-            '<tr>' +
-                '<td id="setting-code">' + $airCode + '</td>' +
-                '<td id="setting-city">' + $airCity + '</td>' +
-                '<td id="setting-state">' + $airState + '</td>' +
-                '<td id="setting-name">' + $airSiteName + '</td>' +
-                '<td id="setting-lat">' + $airLat + '</td>' +
-                '<td id="setting-long">' + $airLong + '</td>' +
-            '</tr>' +
-            
-        '</table>' +
-        '<input onclick="deleteMarkers();" type=button value="Delete Marker">';
+                    '<tr>' +
+                    '<th>Code</th>' +
+                    '<th>City</th>' +
+                    '<th>State</th>' +
+                    '<th>Full Name</th>' +
+                    '<th>Latitude</th>' +
+                    '<th>Longitude</th>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td id="setting-code">' + $airCode + '</td>' +
+                    '<td id="setting-city">' + $airCity + '</td>' +
+                    '<td id="setting-state">' + $airState + '</td>' +
+                    '<td id="setting-name">' + $airSiteName + '</td>' +
+                    '<td id="setting-lat">' + $airLat + '</td>' +
+                    '<td id="setting-long">' + $airLong + '</td>' +
+                    '</tr>' +
 
+                    '</table>' +
+                    '<p>Closing window will remove marker</p>';
+
+                // Creates an infoWindow
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });
@@ -83,16 +78,20 @@ $(function() {
                     map: globalMap,
                     title: currAirport.Code
                 });
+
+                // Causes infoWindow to open on user pin click
                 globalMap.panTo(marker.position);
                 marker.addListener('click', function() {
                     infowindow.open(globalMap, marker);
                 });
+
+                // Causes pin to be removed when user exits infoWindow
+                google.maps.event.addListener(infowindow, 'closeclick', function() {
+                    marker.setMap(null);
+                });
             }
         }
-
-
     }
-
 
     MapFcns.loadSiteList();
     $('#airport-list').change(MapFcns.siteListChange);
@@ -107,11 +106,4 @@ $(function() {
             $('#exercise-instructions').show();
         }
     });
-
 });
-
-
-
-function deleteMarkers() {
-    marker.setVisible(false);
-};
